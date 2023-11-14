@@ -27,3 +27,8 @@ ul li {
     display: fixed;
     bottom: 2em;
 }
+
+.main #pagination>div {
+    display: inline-block;
+    margin-right: .5em;
+}
