@@ -1,0 +1,29 @@
+ul {
+    padding: 0;
+}
+
+ul li {
+    list-style-type: none;
+}
+
+.main {
+    margin: 5em 0;
+    padding: 1em;
+}
+
+.main .top {}
+
+.main .bottom {
+    margin: 4em 0 0 0;
+}
+
+#results li .imgContainer,
+#results li .imgContainer img {
+    width: 5em;
+    height: auto;
+}
+
+.main .pagination {
+    display: fixed;
+    bottom: 2em;
+}
