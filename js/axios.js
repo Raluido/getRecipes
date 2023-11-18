@@ -38,7 +38,7 @@ window.onload = () => {
         // ir a pagina 0
         response.data.results.forEach(element => {
             let liContainer = document.createElement('li');
-            let innerLiContainer = document.createElement('div');
+            let innerLiContainer = document.createElement('a');
             let divTextContainer = document.createElement('div');
             let innerParagraphContainer = document.createElement('p');
             let divImgContainer = document.createElement('div');
@@ -266,8 +266,8 @@ window.onload = () => {
             previous.setAttribute('id', 'previous');
             pagination.appendChild(previous);
 
-            if (pageSelected < 11) {
-
+            if (pageSelected < 7) {
+                console.log("menor que 8");
                 for (let i = 1; i < 11; i++) {
                     let middles = document.createElement('div');
                     middles.innerHTML = i;
@@ -289,7 +289,8 @@ window.onload = () => {
                 last.setAttribute('class', 'pages');
                 pagination.appendChild(last);
 
-            } else if (10 < pageSelected <= totalPages - 10) {
+            } else if (6 < pageSelected <= totalPages - 10) {
+                console.log("mayor que 7");
                 let first = document.createElement('div');
                 first.innerHTML = 1;
                 first.setAttribute('class', 'pages');
@@ -365,6 +366,7 @@ window.onload = () => {
 
         previousButton.addEventListener('click', (pageSelected) => {
             pageSelected -= 1;
+            console.log(pageSelected);
             goToPage(pageSelected);
         })
         nextButton.addEventListener('click', (pageSelected) => {
