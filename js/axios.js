@@ -7,6 +7,7 @@ window.onload = () => {
     let nextButton;
     let gotToFirstButton;
     let gotToLastButton;
+    let recipe;
 
     searchInput.addEventListener('input', () => {
         axios({
@@ -23,6 +24,7 @@ window.onload = () => {
 
     const reloadPage = (response, pageSelected) => {
         console.log("page Selected reload page " + pageSelected);
+        console.log(response);
 
         results = document.getElementById('results');
 
@@ -39,6 +41,8 @@ window.onload = () => {
         response.data.results.forEach(element => {
             let liContainer = document.createElement('li');
             let innerLiContainer = document.createElement('a');
+            innerLiContainer.setAttribute('class', 'recipe');
+            innerLiContainer.setAttribute('data-id', element.id);
             let divTextContainer = document.createElement('div');
             let innerParagraphContainer = document.createElement('p');
             let divImgContainer = document.createElement('div');
@@ -359,10 +363,13 @@ window.onload = () => {
             goToLast.setAttribute('id', 'goToLast');
             pagination.appendChild(goToLast);
         }
+
+        // print pagination
         previousButton = document.querySelector('#previous');
         nextButton = document.querySelector('#next');
         gotToFirstButton = document.querySelector('#goToFirst');
         gotToLastButton = document.querySelector('#goToLast');
+        recipe = document.querySelector('#recipe');
 
         previousButton.addEventListener('click', (pageSelected) => {
             pageSelected -= 1;
@@ -383,6 +390,12 @@ window.onload = () => {
             console.log("enviando a pagina " + $(this).text());
             goToPage($(this).text());
         })
+
+        // print links to recipe
+        $('.recipe').on('click', function () {
+            let dataId = this.getAttribute('data-id');
+            goToRecipe(dataId);
+        });
     }
 
     const goToPage = (pageSelected) => {
@@ -396,6 +409,35 @@ window.onload = () => {
         }).then((response) => {
             reloadPage(response, pageSelected - 1);
             console.log("fin");
+        }).catch(error => console.error(error))
+    }
+
+    const goToRecipe = (dataId) => {
+        axios({
+            type: 'get',
+            url: `https://api.spoonacular.com/recipes/${dataId}/information?includeNutrition=false&apiKey=ba883262a53e4b948155f9ae2bfc1ac8`,
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        }).then((response) => {
+
+            if (results.hasChildNodes()) {
+                while (results.firstChild) {
+                    results.removeChild(results.firstChild)
+                }
+                console.log("results borrados " + results.firstElementChild);
+            }
+
+            if (pagination.hasChildNodes()) {
+                while (pagination.firstChild) {
+                    pagination.removeChild(pagination.firstChild)
+                }
+                console.log("pagination borrados " + pagination.firstElementChild);
+            }
+
+            let recipeContainer = document.createElement('div');
+            
+
         }).catch(error => console.error(error))
     }
 
