@@ -435,8 +435,24 @@ window.onload = () => {
                 console.log("pagination borrados " + pagination.firstElementChild);
             }
 
-            let recipeContainer = document.createElement('div');
-            
+            console.log(response);
+
+            response.data.forEach(element => {
+                let recipe = document.createElement('div');
+                recipe.setAttribute('class', 'recipeSelected');
+                let diet = document.createElement('p');
+                diet.innerHTML = "Dieta: "
+                element.diets.forEach(subelement => {
+                    diet.innerHTML += subelement + "/";
+                })
+                let titleContainer = document.createElement('div');
+                let title = document.createElement('h4');
+                let imgContainer = document.createElement('img');
+                imgContainer.setAttribute('src', element.image);
+
+
+            })
+
 
         }).catch(error => console.error(error))
     }
