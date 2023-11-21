@@ -1,20 +1,37 @@
-ul {
+body {
+    margin: 0;
     padding: 0;
 }
 
-ul li {
+ul,
+ol,
+li {
+    padding: 0;
+    margin: 0;
+}
+
+li {
     list-style-type: none;
 }
 
-.main {
-    margin: 5em 0;
+header {
+    padding: 0 1em;
+    height: 5vh;
+    border-bottom: gray;
+}
+
+.main .top {
     padding: 1em;
 }
 
-.main .top {}
+.main .top .searchLabel {
+    font-size: .7em;
+}
 
 .main .bottom {
-    margin: 4em 0 0 0;
+    background-color: #84e184;
+    padding: 1em;
+    height: 95vh;
 }
 
 #results li .imgContainer,
@@ -25,7 +42,6 @@ ul li {
 
 .main .pagination {
     display: fixed;
-    bottom: 2em;
 }
 
 .main #pagination>div {

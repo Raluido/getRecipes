@@ -435,24 +435,36 @@ window.onload = () => {
                 console.log("pagination borrados " + pagination.firstElementChild);
             }
 
-            console.log(response);
+            console.log(response.data);
 
-            response.data.forEach(element => {
-                let recipe = document.createElement('div');
-                recipe.setAttribute('class', 'recipeSelected');
-                let diet = document.createElement('p');
-                diet.innerHTML = "Dieta: "
-                element.diets.forEach(subelement => {
-                    diet.innerHTML += subelement + "/";
-                })
-                let titleContainer = document.createElement('div');
-                let title = document.createElement('h4');
-                let imgContainer = document.createElement('img');
-                imgContainer.setAttribute('src', element.image);
-
-
+            let recipe = document.createElement('div');
+            recipe.setAttribute('class', 'recipeSelected');
+            let diet = document.createElement('p');
+            diet.innerHTML = "Dieta: "
+            response.data.diets.forEach(subelement => {
+                diet.innerHTML += '/' + subelement;
             })
-
+            let titleContainer = document.createElement('div');
+            let title = document.createElement('h4');
+            title.innerHTML = response.data.title;
+            let imgContainer = document.createElement('div');
+            imgContainer.style.width = '100%';
+            imgContainer.style.height = 'auto';
+            let img = document.createElement('img');
+            img.setAttribute('src', response.data.image);
+            img.style.width = '100%';
+            img.style.height = 'auto';
+            img.style.margin = '2em 0';
+            let instructions = document.createElement('div');
+            instructions.innerHTML = response.data.instructions;
+            results.appendChild(recipe);
+            results.appendChild(imgContainer);
+            imgContainer.appendChild(img);
+            recipe.appendChild(diet);
+            recipe.appendChild(titleContainer);
+            titleContainer.appendChild(title);
+            recipe.appendChild(imgContainer);
+            recipe.appendChild(instructions);
 
         }).catch(error => console.error(error))
     }
