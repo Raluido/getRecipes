@@ -2,7 +2,10 @@ window.onload = () => {
 
     let magnifying = document.querySelector('#magnifying');
     let searchInputContainer = document.querySelector('.main .top');
-    let searchInput = document.getElementById('searchInput');
+    let searchButton = document.getElementById('searchButton');
+    let showFilters = document.getElementById('showFilters');
+    let filtersButton = document.getElementById('filtersButton');
+    let filters;
     let results;
     let innerPagination;
     let previousButton;
@@ -10,6 +13,20 @@ window.onload = () => {
     let gotToFirstButton;
     let gotToLastButton;
     let recipe;
+    // let cuisine;
+    // let diet;
+    // let intolerances;
+    // let includeIngredients;
+    // let excludeIngredients;
+    // let maxReadyTime;
+    // let minCarbs;
+    // let maxCarbs;
+    // let minProtein;
+    // let maxProtein;
+    // let minCalories;
+    // let maxCalories;
+    // let minFat;
+    // let maxFat;
 
     axios({
         type: 'get',
@@ -26,14 +43,65 @@ window.onload = () => {
         if (searchInputContainer.classList.contains('d-none')) {
             searchInputContainer.classList.remove('d-none');
             searchInputContainer.classList.add('d-block');
-        } else {
+        } else if (searchInputContainer.classList.contains('d-block') || showFilters.classList.contains('d-block')) {
+            showFilters.classList.remove('d-block');
+            showFilters.classList.add('d-none');
             searchInputContainer.classList.remove('d-block');
             searchInputContainer.classList.add('d-none');
         }
-        searchInput.addEventListener('input', () => {
+
+
+        filtersButton.addEventListener('click', () => {
+            if (showFilters.classList.contains('d-none')) {
+                showFilters.classList.remove('d-none');
+                showFilters.classList.add('d-block');
+            } else {
+                showFilters.classList.remove('d-block');
+                showFilters.classList.add('d-none');
+            }
+        })
+
+        searchButton.addEventListener('click', () => {
+            // cuisine = document.getElementById('cuisine');
+            // cuisine = '&cuisine=' + cuisine;
+            // diet = document.getElementById('diet');
+            // diet = '$diet=' + diet;
+            // intolerances = document.getElementById('intolerances');
+            // intolerances = '&intolerances=' + intolerances;
+            // includeIngredients = document.getElementById('includeIngredients');
+            // includeIngredients = '&includeIngredients=' + includeIngredients;
+            // excludeIngredients = document.getElementById('excludeIngredients');
+            // excludeIngredients = '&excludeIngredients=' + excludeIngredients;
+            // maxReadyTime = document.getElementById('maxReadyTime');
+            // maxReadyTime = '&maxReadyTime=' + maxReadyTime;
+            // minCarbs = document.getElementById('minCarbs');
+            // minCarbs = '&minCarbs=' + minCarbs;
+            // maxCarbs = document.getElementById('maxCarbs');
+            // maxCarbs = '&maxCarbs=' + maxCarbs;
+            // minProtein = document.getElementById('minProtein');
+            // minProtein = '&minProtein=' + minProtein;
+            // maxProtein = document.getElementById('maxProtein');
+            // maxProtein = '&maxProtein=' + maxProtein;
+            // minCalories = document.getElementById('minCalories');
+            // minCalories = '&minCalories=' + minCalories;
+            // maxCalories = document.getElementById('maxCalories');
+            // maxCalories = '&maxCalories=' + maxCalories;
+            // minFat = document.getElementById('minFat');
+            // minFat = '&minFat=' + minFat;
+            // maxFat = document.getElementById('maxFat');
+            // maxFat = '&maxFat=' + maxFat;
+
+            filters = '';
+
+            for (const child of showFilters.children) {
+                if (child.value != '') {
+                    filters += '&' + child.getAttribute('id') + '=' + child.value;
+                }
+            }
+
             axios({
                 type: 'get',
-                url: `https://api.spoonacular.com/recipes/complexSearch?query=${searchInput.value}&apiKey=ba883262a53e4b948155f9ae2bfc1ac8`,
+                url: `https://api.spoonacular.com/recipes/complexSearch?query=${searchInput.value}${filters}&apiKey=ba883262a53e4b948155f9ae2bfc1ac8`,
                 headers: {
                     "Content-Type": 'application/json'
                 }
@@ -42,12 +110,11 @@ window.onload = () => {
                 reloadPage(response, pageSelected - 1);  // we want to start paging in 1 but offset start in 0
             }).catch(error => console.error(error))
         })
+
     })
 
 
     const reloadPage = (response, pageSelected) => {
-        console.log("page Selected reload page " + pageSelected);
-        console.log(response);
 
         results = document.getElementById('results');
 
@@ -55,12 +122,8 @@ window.onload = () => {
             while (results.firstChild) {
                 results.removeChild(results.firstChild)
             }
-            console.log("results borrados " + results.firstElementChild);
         }
 
-        console.log(response.data.results);
-
-        // ir a pagina 0
         response.data.results.forEach(element => {
             let liContainer = document.createElement('li');
             let innerLiContainer = document.createElement('a');
@@ -90,11 +153,9 @@ window.onload = () => {
             while (innerPagination.firstChild) {
                 innerPagination.removeChild(innerPagination.firstChild)
             }
-            console.log("innerPagination borrados " + innerPagination.firstElementChild);
         }
 
         let totalPages = Math.ceil(response.data.totalResults / response.data.number);
-        console.log(totalPages);
         if (totalPages == 1) {
             let middle = document.createElement('div');
             middle.setAttribute('class', 'pages');
@@ -102,7 +163,6 @@ window.onload = () => {
             innerPagination.appendChild(middle);
         }
         if (2 <= totalPages && totalPages <= 15) {
-            console.log("menor de 15");
             for (let i = 0; i < totalPages; i++) {
                 let middles = document.createElement('div');
                 middle.setAttribute('class', 'pages');
@@ -110,7 +170,6 @@ window.onload = () => {
                 innerPagination.appendChild(middles);
             }
         } else if (16 <= totalPages && totalPages <= 20) {
-            console.log("16 a 20");
             let goToFirst = document.createElement('div');
             goToFirst.innerHTML = '<<';
             goToFirst.setAttribute('id', 'goToFirst');
@@ -178,7 +237,6 @@ window.onload = () => {
             innerPagination.appendChild(goToLast);
 
         } else if (21 <= totalPages && totalPages <= 26) {
-            console.log("21 a 26");
             let goToFirst = document.createElement('div');
             goToFirst.innerHTML = '<<';
             goToFirst.setAttribute('id', 'goToFirst');
@@ -282,7 +340,6 @@ window.onload = () => {
             innerPagination.appendChild(goToLast);
 
         } else if (27 <= totalPages) {
-            console.log("mas de 27");
             let goToFirst = document.createElement('div');
             goToFirst.innerHTML = '<<';
             goToFirst.setAttribute('id', 'goToFirst');
@@ -294,7 +351,6 @@ window.onload = () => {
             innerPagination.appendChild(previous);
 
             if (pageSelected < 7) {
-                console.log("menor que 8");
                 for (let i = 1; i < 11; i++) {
                     let middles = document.createElement('div');
                     middles.innerHTML = i;
@@ -317,7 +373,6 @@ window.onload = () => {
                 innerPagination.appendChild(last);
 
             } else if (6 < pageSelected <= totalPages - 10) {
-                console.log("mayor que 7");
                 let first = document.createElement('div');
                 first.innerHTML = 1;
                 first.setAttribute('class', 'pages');
@@ -396,7 +451,6 @@ window.onload = () => {
 
         previousButton.addEventListener('click', (pageSelected) => {
             pageSelected -= 1;
-            console.log(pageSelected);
             goToPage(pageSelected);
         })
         nextButton.addEventListener('click', (pageSelected) => {
@@ -410,7 +464,6 @@ window.onload = () => {
             goToPage();
         })
         $('.pages').on('click', function () {
-            console.log("enviando a pagina " + $(this).text());
             goToPage($(this).text());
         })
 
@@ -422,7 +475,6 @@ window.onload = () => {
     }
 
     const goToPage = (pageSelected) => {
-        console.log("page Selected en goto" + pageSelected);
         axios({
             type: 'get',
             url: `https://api.spoonacular.com/recipes/complexSearch?query=${searchInput.value}&offset=${pageSelected}&apiKey=ba883262a53e4b948155f9ae2bfc1ac8`,
@@ -431,7 +483,6 @@ window.onload = () => {
             }
         }).then((response) => {
             reloadPage(response, pageSelected - 1);
-            console.log("fin");
         }).catch(error => console.error(error))
     }
 
@@ -448,19 +499,15 @@ window.onload = () => {
                 while (results.firstChild) {
                     results.removeChild(results.firstChild)
                 }
-                console.log("results borrados " + results.firstElementChild);
             }
 
             if (innerPagination.hasChildNodes()) {
                 while (innerPagination.firstChild) {
                     innerPagination.removeChild(innerPagination.firstChild)
                 }
-                console.log("innerPagination borrados " + innerPagination.firstElementChild);
             }
 
-            console.log(response.data);
-
-            let recipe = document.createElement('div');
+            recipe = document.createElement('div');
             recipe.setAttribute('class', 'recipeSelected');
             let diet = document.createElement('p');
             diet.innerHTML = "Dieta: "

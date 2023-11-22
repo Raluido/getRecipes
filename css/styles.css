@@ -64,12 +64,37 @@ header .menuContainer img {
     border-top: 1px solid gray;
 }
 
-.main .top .searchLabel {
-    font-size: .7em;
+.main .top div,
+.main .top i,
+.main .top input {
+    display: inline-block;
+}
+
+.main .top input,
+.main .top div {
+    margin-right: 1em;
+}
+
+.main .top #searchInput {
+    width: 18em;
 }
 
 .main .bottom {
     padding: 1em;
+}
+
+.main #showFilters {
+    padding: 1em 0;
+    background-color: white;
+    text-align: center;
+}
+
+.main #showFilters>input {
+    width: 10em;
+}
+
+.main #showFilters>input {
+    margin-top: .5em;
 }
 
 #results li {

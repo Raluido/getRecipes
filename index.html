@@ -26,8 +26,28 @@
     </header>
     <section class="main">
         <div class="top d-none">
-            <input type="text" class="" id="searchInput" placeholder="Búsca tus recetas">
-            <label for="" class="searchLabel">Busca por recetas o por producto</label>
+            <input type="text" class="" id="searchInput" placeholder="Recetas, ingredientes o...">
+            <div id="searchButton">Busca!</div>
+            <i class="fa-solid fa-filter" id="filtersButton"></i>
+        </div>
+        <div class="d-none" id="showFilters">
+            <div class="">
+                <h4 class="">Afina la búsqueda</h4>
+            </div>
+            <input type="text" id="cuisine" placeholder="cuisine">
+            <input type="text" id="diet" placeholder="diet">
+            <input type="text" id="intolerances" placeholder="intolerances">
+            <input type="text" id="includeIngredients" placeholder="includeIngredients">
+            <input type="text" id="excludeIngredients" placeholder="excludeIngredients">
+            <input type="text" id="maxReadyTime" placeholder="maxReadyTime">
+            <input type="text" id="minCarbs" placeholder="minCarbs">
+            <input type="text" id="maxCarbs" placeholder="maxCarbs">
+            <input type="text" id="minProtein" placeholder="minProtein">
+            <input type="text" id="maxProtein" placeholder="maxProtein">
+            <input type="text" id="minCalories" placeholder="minCalories">
+            <input type="text" id="maxCalories" placeholder="maxCalories">
+            <input type="text" id="minFat" placeholder="minFat">
+            <input type="text" id="maxFat" placeholder="maxFat">
         </div>
         <div class="bottom">
             <ul class="" id="results"></ul>
