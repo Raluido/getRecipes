@@ -1,6 +1,12 @@
-body {
+* {
     margin: 0;
     padding: 0;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
 }
 
 ul,
@@ -14,14 +20,48 @@ li {
     list-style-type: none;
 }
 
+.d-none {
+    display: none;
+}
+
+.d-block {
+    display: block;
+}
+
+body {
+    background-color: #84e184;
+}
+
 header {
-    padding: 0 1em;
-    height: 5vh;
-    border-bottom: gray;
+    padding: 1em;
+    background-color: white;
+}
+
+header .innerHeader {
+    display: grid;
+    grid-template-columns: 10% 80% 10%;
+}
+
+header .titleContainer {
+    text-align: center;
+}
+
+header .menuContainer,
+header .magnifyingContainer {
+    display: flex;
+    align-items: center;
+}
+
+header .menuContainer,
+header .menuContainer img {
+    width: 1.2em;
+    height: auto;
 }
 
 .main .top {
+    background-color: white;
     padding: 1em;
+    border-top: 1px solid gray;
 }
 
 .main .top .searchLabel {
@@ -29,22 +69,37 @@ header {
 }
 
 .main .bottom {
-    background-color: #84e184;
     padding: 1em;
-    height: 95vh;
+}
+
+#results li {
+    margin: 1em 0;
 }
 
 #results li .imgContainer,
 #results li .imgContainer img {
-    width: 5em;
+    width: 3em;
     height: auto;
 }
 
-.main .pagination {
-    display: fixed;
+#results li div {
+    display: flex;
+    align-items: center;
 }
 
-.main #pagination>div {
+.main #pagination {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    height: 2.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+    background-color: #84e184;
+}
+
+.main #innerPagination>div {
     display: inline-block;
     margin-right: .5em;
 }

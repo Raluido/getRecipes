@@ -1,26 +1,49 @@
 window.onload = () => {
 
+    let magnifying = document.querySelector('#magnifying');
+    let searchInputContainer = document.querySelector('.main .top');
     let searchInput = document.getElementById('searchInput');
     let results;
-    let pagination;
+    let innerPagination;
     let previousButton;
     let nextButton;
     let gotToFirstButton;
     let gotToLastButton;
     let recipe;
 
-    searchInput.addEventListener('input', () => {
-        axios({
-            type: 'get',
-            url: `https://api.spoonacular.com/recipes/complexSearch?query=${searchInput.value}&apiKey=ba883262a53e4b948155f9ae2bfc1ac8`,
-            headers: {
-                "Content-Type": 'application/json'
-            }
-        }).then((response) => {
-            let pageSelected = 1;
-            reloadPage(response, pageSelected - 1);  // we want to start paging in 1 but offset start in 0
-        }).catch(error => console.error(error))
+    axios({
+        type: 'get',
+        url: `https://api.spoonacular.com/recipes/complexSearch?&apiKey=ba883262a53e4b948155f9ae2bfc1ac8`,
+        headers: {
+            "Content-Type": 'application/json'
+        }
+    }).then((response) => {
+        let pageSelected = 1;
+        reloadPage(response, pageSelected - 1);  // we want to start paging in 1 but offset start in 0
+    }).catch(error => console.error(error))
+
+    magnifying.addEventListener('click', () => {
+        if (searchInputContainer.classList.contains('d-none')) {
+            searchInputContainer.classList.remove('d-none');
+            searchInputContainer.classList.add('d-block');
+        } else {
+            searchInputContainer.classList.remove('d-block');
+            searchInputContainer.classList.add('d-none');
+        }
+        searchInput.addEventListener('input', () => {
+            axios({
+                type: 'get',
+                url: `https://api.spoonacular.com/recipes/complexSearch?query=${searchInput.value}&apiKey=ba883262a53e4b948155f9ae2bfc1ac8`,
+                headers: {
+                    "Content-Type": 'application/json'
+                }
+            }).then((response) => {
+                let pageSelected = 1;
+                reloadPage(response, pageSelected - 1);  // we want to start paging in 1 but offset start in 0
+            }).catch(error => console.error(error))
+        })
     })
+
 
     const reloadPage = (response, pageSelected) => {
         console.log("page Selected reload page " + pageSelected);
@@ -61,13 +84,13 @@ window.onload = () => {
             innerImgContainer.setAttribute('src', element.image);
         })
 
-        pagination = document.getElementById('pagination');
+        innerPagination = document.getElementById('innerPagination');
 
-        if (pagination.hasChildNodes()) {
-            while (pagination.firstChild) {
-                pagination.removeChild(pagination.firstChild)
+        if (innerPagination.hasChildNodes()) {
+            while (innerPagination.firstChild) {
+                innerPagination.removeChild(innerPagination.firstChild)
             }
-            console.log("pagination borrados " + pagination.firstElementChild);
+            console.log("innerPagination borrados " + innerPagination.firstElementChild);
         }
 
         let totalPages = Math.ceil(response.data.totalResults / response.data.number);
@@ -76,7 +99,7 @@ window.onload = () => {
             let middle = document.createElement('div');
             middle.setAttribute('class', 'pages');
             middle.innerHTML = 0;
-            pagination.appendChild(middle);
+            innerPagination.appendChild(middle);
         }
         if (2 <= totalPages && totalPages <= 15) {
             console.log("menor de 15");
@@ -84,19 +107,19 @@ window.onload = () => {
                 let middles = document.createElement('div');
                 middle.setAttribute('class', 'pages');
                 middles.innerHTML = i;
-                pagination.appendChild(middles);
+                innerPagination.appendChild(middles);
             }
         } else if (16 <= totalPages && totalPages <= 20) {
             console.log("16 a 20");
             let goToFirst = document.createElement('div');
             goToFirst.innerHTML = '<<';
             goToFirst.setAttribute('id', 'goToFirst');
-            pagination.appendChild(goToFirst);
+            innerPagination.appendChild(goToFirst);
 
             let previous = document.createElement('div');
             previous.innerHTML = '<';
             previous.setAttribute('id', 'previous');
-            pagination.appendChild(previous);
+            innerPagination.appendChild(previous);
 
             if (pageSelected < 11) {
 
@@ -104,67 +127,67 @@ window.onload = () => {
                     let middles = document.createElement('div');
                     middles.innerHTML = i;
                     middles.setAttribute('class', 'pages');
-                    pagination.appendChild(middles);
+                    innerPagination.appendChild(middles);
                 }
 
                 dots = document.createElement('div');
                 dots.innerHTML = "...";
-                pagination.appendChild(dots);
+                innerPagination.appendChild(dots);
 
                 let beforeLast = document.createElement('div');
                 beforeLast.innerHTML = totalPages - 1;
                 beforeLast.setAttribute('class', 'pages');
-                pagination.appendChild(beforeLast);
+                innerPagination.appendChild(beforeLast);
 
                 let last = document.createElement('div');
                 last.innerHTML = totalPages;
                 last.setAttribute('class', 'pages');
-                pagination.appendChild(last);
+                innerPagination.appendChild(last);
 
             } else if (10 < pageSelected) {
                 let first = document.createElement('div');
                 first.innerHTML = 1;
                 first.setAttribute('class', 'pages');
-                pagination.appendChild(first);
+                innerPagination.appendChild(first);
 
                 let second = document.createElement('div');
                 second.innerHTML = 2;
                 second.setAttribute('class', 'pages');
-                pagination.appendChild(second);
+                innerPagination.appendChild(second);
 
                 let dots = document.createElement('div');
                 dots.innerHTML = "...";
-                pagination.appendChild(dots);
+                innerPagination.appendChild(dots);
 
                 for (let i = 11; i <= totalPages; i++) {
                     let middles = document.createElement('div');
                     middles.innerHTML = i;
                     middles.setAttribute('class', 'pages');
-                    pagination.appendChild(middles);
+                    innerPagination.appendChild(middles);
                 }
             }
 
             let next = document.createElement('div');
             next.innerHTML = '>';
             next.setAttribute('id', 'next');
-            pagination.appendChild(next);
+            innerPagination.appendChild(next);
 
             let goToLast = document.createElement('div');
             goToLast.innerHTML = '>>';
             goToLast.setAttribute('id', 'goToLast');
-            pagination.appendChild(goToLast);
+            innerPagination.appendChild(goToLast);
 
         } else if (21 <= totalPages && totalPages <= 26) {
             console.log("21 a 26");
             let goToFirst = document.createElement('div');
             goToFirst.innerHTML = '<<';
             goToFirst.setAttribute('id', 'goToFirst');
-            pagination.appendChild(goToFirst);
+            innerPagination.appendChild(goToFirst);
 
             let previous = document.createElement('div');
             previous.innerHTML = '<';
             previous.setAttribute('id', 'previous');
-            pagination.appendChild(previous);
+            innerPagination.appendChild(previous);
 
             if (pageSelected < 8) {
 
@@ -172,103 +195,103 @@ window.onload = () => {
                     let middles = document.createElement('div');
                     middles.innerHTML = i;
                     middles.setAttribute('class', 'pages');
-                    pagination.appendChild(middles);
+                    innerPagination.appendChild(middles);
                 }
 
                 dots = document.createElement('div');
                 dots.innerHTML = "...";
-                pagination.appendChild(dots);
+                innerPagination.appendChild(dots);
 
                 let beforeLast = document.createElement('div');
                 beforeLast.innerHTML = totalPages - 1;
                 beforeLast.setAttribute('class', 'pages');
-                pagination.appendChild(beforeLast);
+                innerPagination.appendChild(beforeLast);
 
                 let last = document.createElement('div');
                 last.innerHTML = totalPages;
                 last.setAttribute('class', 'pages');
-                pagination.appendChild(last);
+                innerPagination.appendChild(last);
 
             } else if (7 < pageSelected <= 13) {
                 let first = document.createElement('div');
                 first.innerHTML = 1;
                 first.setAttribute('class', 'pages');
-                pagination.appendChild(first);
+                innerPagination.appendChild(first);
 
                 let second = document.createElement('div');
                 second.innerHTML = 2;
                 second.setAttribute('class', 'pages');
-                pagination.appendChild(second);
+                innerPagination.appendChild(second);
 
                 let dots = document.createElement('div');
                 dots.innerHTML = "...";
-                pagination.appendChild(dots);
+                innerPagination.appendChild(dots);
 
                 for (let i = pageSelected - 3; i <= pageSelected + 3; i++) {
                     let middles = document.createElement('div');
                     middles.innerHTML = i;
                     middles.setAttribute('class', 'pages');
-                    pagination.appendChild(middles);
+                    innerPagination.appendChild(middles);
                 }
 
                 dots = document.createElement('div');
                 dots.innerHTML = "...";
-                pagination.appendChild(dots);
+                innerPagination.appendChild(dots);
 
                 let beforeLast = document.createElement('div');
                 beforeLast.innerHTML = totalPages - 1;
                 beforeLast.setAttribute('class', 'pages');
-                pagination.appendChild(beforeLast);
+                innerPagination.appendChild(beforeLast);
 
                 let last = document.createElement('div');
                 last.innerHTML = totalPages;
                 last.setAttribute('class', 'pages');
-                pagination.appendChild(last);
+                innerPagination.appendChild(last);
 
             } else if (13 < pageSelected) {
                 let first = document.createElement('div');
                 first.innerHTML = 1;
                 first.setAttribute('class', 'pages');
-                pagination.appendChild(first);
+                innerPagination.appendChild(first);
 
                 let second = document.createElement('div');
                 second.innerHTML = 2;
                 second.setAttribute('class', 'pages');
-                pagination.appendChild(second);
+                innerPagination.appendChild(second);
 
                 let dots = document.createElement('div');
                 dots.innerHTML = "...";
-                pagination.appendChild(dots);
+                innerPagination.appendChild(dots);
 
                 for (let i = pageSelected; i <= totalPages; i++) {
                     let middles = document.createElement('div');
                     middles.innerHTML = i;
                     middles.setAttribute('class', 'pages');
-                    pagination.appendChild(middles);
+                    innerPagination.appendChild(middles);
                 }
             }
 
             let next = document.createElement('div');
             next.innerHTML = '>';
             next.setAttribute('id', 'next');
-            pagination.appendChild(next);
+            innerPagination.appendChild(next);
 
             let goToLast = document.createElement('div');
             goToLast.innerHTML = '>>';
             goToLast.setAttribute('id', 'goToLast');
-            pagination.appendChild(goToLast);
+            innerPagination.appendChild(goToLast);
 
         } else if (27 <= totalPages) {
             console.log("mas de 27");
             let goToFirst = document.createElement('div');
             goToFirst.innerHTML = '<<';
             goToFirst.setAttribute('id', 'goToFirst');
-            pagination.appendChild(goToFirst);
+            innerPagination.appendChild(goToFirst);
 
             let previous = document.createElement('div');
             previous.innerHTML = '<';
             previous.setAttribute('id', 'previous');
-            pagination.appendChild(previous);
+            innerPagination.appendChild(previous);
 
             if (pageSelected < 7) {
                 console.log("menor que 8");
@@ -276,95 +299,95 @@ window.onload = () => {
                     let middles = document.createElement('div');
                     middles.innerHTML = i;
                     middles.setAttribute('class', 'pages');
-                    pagination.appendChild(middles);
+                    innerPagination.appendChild(middles);
                 }
 
                 dots = document.createElement('div');
                 dots.innerHTML = "...";
-                pagination.appendChild(dots);
+                innerPagination.appendChild(dots);
 
                 let beforeLast = document.createElement('div');
                 beforeLast.innerHTML = totalPages - 1;
                 beforeLast.setAttribute('class', 'pages');
-                pagination.appendChild(beforeLast);
+                innerPagination.appendChild(beforeLast);
 
                 let last = document.createElement('div');
                 last.innerHTML = totalPages;
                 last.setAttribute('class', 'pages');
-                pagination.appendChild(last);
+                innerPagination.appendChild(last);
 
             } else if (6 < pageSelected <= totalPages - 10) {
                 console.log("mayor que 7");
                 let first = document.createElement('div');
                 first.innerHTML = 1;
                 first.setAttribute('class', 'pages');
-                pagination.appendChild(first);
+                innerPagination.appendChild(first);
 
                 let second = document.createElement('div');
                 second.innerHTML = 2;
                 second.setAttribute('class', 'pages');
-                pagination.appendChild(second);
+                innerPagination.appendChild(second);
 
                 let dots = document.createElement('div');
                 dots.innerHTML = "...";
-                pagination.appendChild(dots);
+                innerPagination.appendChild(dots);
 
                 for (let i = pageSelected - 3; i <= pageSelected + 3; i++) {
                     let middles = document.createElement('div');
                     middles.innerHTML = i;
                     middles.setAttribute('class', 'pages');
-                    pagination.appendChild(middles);
+                    innerPagination.appendChild(middles);
                 }
 
                 dots = document.createElement('div');
                 dots.innerHTML = "...";
-                pagination.appendChild(dots);
+                innerPagination.appendChild(dots);
 
                 let beforeLast = document.createElement('div');
                 beforeLast.innerHTML = totalPages - 1;
                 beforeLast.setAttribute('class', 'pages');
-                pagination.appendChild(beforeLast);
+                innerPagination.appendChild(beforeLast);
 
                 let last = document.createElement('div');
                 last.innerHTML = totalPages;
                 last.setAttribute('class', 'pages');
-                pagination.appendChild(last);
+                innerPagination.appendChild(last);
 
             } else if (pageSelected > totalPages - 10) {
                 let first = document.createElement('div');
                 first.innerHTML = 1;
                 first.setAttribute('class', 'pages');
-                pagination.appendChild(first);
+                innerPagination.appendChild(first);
 
                 let second = document.createElement('div');
                 second.innerHTML = 2;
                 second.setAttribute('class', 'pages');
-                pagination.appendChild(second);
+                innerPagination.appendChild(second);
 
                 let dots = document.createElement('div');
                 dots.innerHTML = "...";
-                pagination.appendChild(dots);
+                innerPagination.appendChild(dots);
 
                 for (let i = pageSelected; i <= totalPages; i++) {
                     let middles = document.createElement('div');
                     middles.innerHTML = i;
                     middles.setAttribute('class', 'pages');
-                    pagination.appendChild(middles);
+                    innerPagination.appendChild(middles);
                 }
             }
 
             let next = document.createElement('div');
             next.innerHTML = '>';
             next.setAttribute('id', 'next');
-            pagination.appendChild(next);
+            innerPagination.appendChild(next);
 
             let goToLast = document.createElement('div');
             goToLast.innerHTML = '>>';
             goToLast.setAttribute('id', 'goToLast');
-            pagination.appendChild(goToLast);
+            innerPagination.appendChild(goToLast);
         }
 
-        // print pagination
+        // print innerPagination
         previousButton = document.querySelector('#previous');
         nextButton = document.querySelector('#next');
         gotToFirstButton = document.querySelector('#goToFirst');
@@ -428,11 +451,11 @@ window.onload = () => {
                 console.log("results borrados " + results.firstElementChild);
             }
 
-            if (pagination.hasChildNodes()) {
-                while (pagination.firstChild) {
-                    pagination.removeChild(pagination.firstChild)
+            if (innerPagination.hasChildNodes()) {
+                while (innerPagination.firstChild) {
+                    innerPagination.removeChild(innerPagination.firstChild)
                 }
-                console.log("pagination borrados " + pagination.firstElementChild);
+                console.log("innerPagination borrados " + innerPagination.firstElementChild);
             }
 
             console.log(response.data);

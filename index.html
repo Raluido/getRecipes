@@ -6,25 +6,37 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css" class="">
     <title>getRecipes</title>
+    <link rel="stylesheet" href="node_modules/@fortawesome/fontawesome-free/css/all.css">
 </head>
 
-<header class="">
-    <div class="">
-        <h2 class="">Más de 1000 recetas</h2>
-    </div>
-</header>
 
 <body>
+    <header class="">
+        <div class="innerHeader">
+            <div class="menuContainer">
+                <img src="img/mobileMenu.png" alt="" class="">
+            </div>
+            <div class="titleContainer">
+                <h2 class="">Más de 1000 recetas</h2>
+            </div>
+            <div class="magnifyingContainer">
+                <i class="fa-solid fa-magnifying-glass" id="magnifying"></i>
+            </div>
+        </div>
+    </header>
     <section class="main">
-        <div class="top">
+        <div class="top d-none">
             <input type="text" class="" id="searchInput" placeholder="Búsca tus recetas">
             <label for="" class="searchLabel">Busca por recetas o por producto</label>
         </div>
         <div class="bottom">
             <ul class="" id="results"></ul>
         </div>
-        <div id="pagination"></div>
+        <div id="pagination">
+            <div id="innerPagination"></div>
+        </div>
     </section>
+    <footer class=""></footer>
 </body>
 
 </html>
