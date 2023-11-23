@@ -128,6 +128,10 @@ header .menuContainer img {
     align-items: center;
 }
 
+#backButton {
+    font-size: 2em;
+}
+
 .main #pagination {
     position: fixed;
     bottom: 0;

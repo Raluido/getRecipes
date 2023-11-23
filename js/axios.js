@@ -13,6 +13,7 @@ window.onload = () => {
     let nextButton;
     let gotToFirstButton;
     let gotToLastButton;
+    let backButton;
     let recipe;
 
     axios({
@@ -37,7 +38,6 @@ window.onload = () => {
             searchInputContainer.classList.add('d-none');
         }
 
-
         filtersButton.addEventListener('click', () => {
             if (showFilters.classList.contains('d-none')) {
                 showFilters.classList.remove('d-none');
@@ -48,29 +48,33 @@ window.onload = () => {
             }
         })
 
+        // searchButton.addEventListener('click', search());
         searchButton.addEventListener('click', () => {
-
-            filters = '';
-
-            for (const child of innerShowFilters.children) {
-                if (child.value != '') {
-                    filters += '&' + child.getAttribute('id') + '=' + child.value;
-                }
-            }
-
-            axios({
-                type: 'get',
-                url: `https://api.spoonacular.com/recipes/complexSearch?query=${searchInput.value}${filters}&apiKey=ba883262a53e4b948155f9ae2bfc1ac8`,
-                headers: {
-                    "Content-Type": 'application/json'
-                }
-            }).then((response) => {
-                let pageSelected = 1;
-                reloadPage(response, pageSelected - 1);  // we want to start paging in 1 but offset start in 0
-            }).catch(error => console.error(error))
-        })
-
+            search();
+        });
     })
+
+    const search = () => {
+
+        filters = '';
+
+        for (const child of innerShowFilters.children) {
+            if (child.value != '') {
+                filters += '&' + child.getAttribute('id') + '=' + child.value;
+            }
+        }
+
+        axios({
+            type: 'get',
+            url: `https://api.spoonacular.com/recipes/complexSearch?query=${searchInput.value}${filters}&apiKey=ba883262a53e4b948155f9ae2bfc1ac8`,
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        }).then((response) => {
+            let pageSelected = 1;
+            reloadPage(response, pageSelected - 1);  // we want to start paging in 1 but offset start in 0
+        }).catch(error => console.error(error))
+    }
 
 
     const reloadPage = (response, pageSelected) => {
@@ -486,6 +490,11 @@ window.onload = () => {
             img.style.margin = '2em 0';
             let instructions = document.createElement('div');
             instructions.innerHTML = response.data.instructions;
+            let backButton = document.createElement('div');
+            backButton.setAttribute('id', 'backButton');
+            backButton.innerHTML = `<i class="fa-solid fa-arrow-left"></i>`;
+            backButton.style.textAlign = 'center';
+            backButton.style.margin = '.5em 0';
             results.appendChild(recipe);
             results.appendChild(imgContainer);
             imgContainer.appendChild(img);
@@ -494,6 +503,12 @@ window.onload = () => {
             titleContainer.appendChild(title);
             recipe.appendChild(imgContainer);
             recipe.appendChild(instructions);
+            recipe.appendChild(backButton);
+
+            backButton = document.querySelector('#backButton');
+            backButton.addEventListener('click', () => {
+                search()
+            });
 
         }).catch(error => console.error(error))
     }
