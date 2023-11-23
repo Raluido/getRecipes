@@ -28,6 +28,14 @@ li {
     display: block;
 }
 
+.d-flex {
+    display: flex;
+}
+
+.d-grid {
+    display: grid;
+}
+
 body {
     background-color: #84e184;
 }
@@ -86,7 +94,15 @@ header .menuContainer img {
 .main #showFilters {
     padding: 1em 0;
     background-color: white;
-    text-align: center;
+}
+
+.main #innerShowFilters {
+    padding: 1em 0;
+    background-color: white;
+    display: grid;
+    grid-template-columns: 40% 40%;
+    justify-content: center;
+    column-gap: 2em;
 }
 
 .main #showFilters>input {
@@ -127,4 +143,5 @@ header .menuContainer img {
 .main #innerPagination>div {
     display: inline-block;
     margin-right: .5em;
+    font-size: .8em;
 }

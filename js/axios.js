@@ -1,10 +1,11 @@
 window.onload = () => {
 
-    let magnifying = document.querySelector('#magnifying');
-    let searchInputContainer = document.querySelector('.main .top');
-    let searchButton = document.getElementById('searchButton');
-    let showFilters = document.getElementById('showFilters');
-    let filtersButton = document.getElementById('filtersButton');
+    const magnifying = document.querySelector('#magnifying');
+    const searchButton = document.getElementById('searchButton');
+    const searchInputContainer = document.querySelector('.main .top');
+    const showFilters = document.getElementById('showFilters');
+    const filtersButton = document.getElementById('filtersButton');
+    let innerShowFilters = document.getElementById('innerShowFilters');
     let filters;
     let results;
     let innerPagination;
@@ -13,20 +14,6 @@ window.onload = () => {
     let gotToFirstButton;
     let gotToLastButton;
     let recipe;
-    // let cuisine;
-    // let diet;
-    // let intolerances;
-    // let includeIngredients;
-    // let excludeIngredients;
-    // let maxReadyTime;
-    // let minCarbs;
-    // let maxCarbs;
-    // let minProtein;
-    // let maxProtein;
-    // let minCalories;
-    // let maxCalories;
-    // let minFat;
-    // let maxFat;
 
     axios({
         type: 'get',
@@ -62,38 +49,10 @@ window.onload = () => {
         })
 
         searchButton.addEventListener('click', () => {
-            // cuisine = document.getElementById('cuisine');
-            // cuisine = '&cuisine=' + cuisine;
-            // diet = document.getElementById('diet');
-            // diet = '$diet=' + diet;
-            // intolerances = document.getElementById('intolerances');
-            // intolerances = '&intolerances=' + intolerances;
-            // includeIngredients = document.getElementById('includeIngredients');
-            // includeIngredients = '&includeIngredients=' + includeIngredients;
-            // excludeIngredients = document.getElementById('excludeIngredients');
-            // excludeIngredients = '&excludeIngredients=' + excludeIngredients;
-            // maxReadyTime = document.getElementById('maxReadyTime');
-            // maxReadyTime = '&maxReadyTime=' + maxReadyTime;
-            // minCarbs = document.getElementById('minCarbs');
-            // minCarbs = '&minCarbs=' + minCarbs;
-            // maxCarbs = document.getElementById('maxCarbs');
-            // maxCarbs = '&maxCarbs=' + maxCarbs;
-            // minProtein = document.getElementById('minProtein');
-            // minProtein = '&minProtein=' + minProtein;
-            // maxProtein = document.getElementById('maxProtein');
-            // maxProtein = '&maxProtein=' + maxProtein;
-            // minCalories = document.getElementById('minCalories');
-            // minCalories = '&minCalories=' + minCalories;
-            // maxCalories = document.getElementById('maxCalories');
-            // maxCalories = '&maxCalories=' + maxCalories;
-            // minFat = document.getElementById('minFat');
-            // minFat = '&minFat=' + minFat;
-            // maxFat = document.getElementById('maxFat');
-            // maxFat = '&maxFat=' + maxFat;
 
             filters = '';
 
-            for (const child of showFilters.children) {
+            for (const child of innerShowFilters.children) {
                 if (child.value != '') {
                     filters += '&' + child.getAttribute('id') + '=' + child.value;
                 }
